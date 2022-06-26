@@ -9,7 +9,7 @@ import {
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: "AIzaSyBOtx-dsrjS09bBAfcenHIEX_SsViBitJ4",
   authDomain: "vsv-chat.firebaseapp.com",
   projectId: "vsv-chat",
   storageBucket: "vsv-chat.appspot.com",
