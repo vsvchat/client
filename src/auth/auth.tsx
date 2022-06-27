@@ -11,11 +11,8 @@ import {
 } from "firebase/auth";
 import {
   getFirestore,
-  // collection,
   doc,
-  // addDoc,
   getDoc,
-  // DocumentData,
   setDoc,
   DocumentData,
 } from "firebase/firestore";
@@ -95,11 +92,11 @@ export function getUserData(user: User | null | undefined) {
   return new Promise<DocumentData>(async (resolve, reject) => {
     try {
       if (!user?.uid) {
-        throw new Error("Invalid user");
+        throw new Error("auth/invalid-user");
       }
       const userDoc = await getDoc(doc(db, "users", user.uid));
       if (!userDoc.exists()) {
-        throw new Error("User does not exist");
+        throw new Error("auth/user-not-exist");
       }
       resolve(userDoc.data());
     } catch (err: any) {

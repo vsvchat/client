@@ -12,6 +12,7 @@ export default function Login() {
   // User input email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [isLoadingLogin, setIsLoadingLogin] = useState(false); // Loading login check
   const [authError, setAuthError] = useState<string | null>(null); // Login failed error
@@ -47,11 +48,18 @@ export default function Login() {
         //TODO Add 'show password option' 
       */}
       <input
-        type="password"
+        type={showPassword ? "text" : "password"}
         value={password}
         onChange={e => setPassword(e.target.value)}
         placeholder="Password"
       />
+
+      {/* Show password option */}
+      <input
+        type="checkbox"
+        onChange={e => setShowPassword(e.target.checked)}
+      />
+      <label>Show password</label>
 
       {/* Login button */}
       <button onClick={login}>Login</button>

@@ -21,19 +21,23 @@ export default function Dashboard() {
   useEffect(() => {
     if (isLoadingUser) return; // Initial load, prevent navigate
     if (!user) navigate("/login"); // Navigate to login page
+
+    // Get display name
     (async () => {
-      setName(await getName(user)); // Get display name
+      if (user?.uid) {
+        setName(await getName(user));
+      }
     })();
   }, [user, navigate, isLoadingUser]);
 
   return (
     <div className="Dashboard">
-      <h1>Dashboard</h1>
-
       <p>
-        Hello, {name || "[name]"}!
+        Hello, {name || "..."}!
         <br />
-        Email: {user?.email || "[email]"}
+        Email: {user?.email || "..."}
+        <br />
+        UID: {user?.uid || "..."}
       </p>
 
       {/* Logout button */}
@@ -41,9 +45,6 @@ export default function Dashboard() {
 
       {/* Loading indicator */}
       {isLoadingUser ? <span>Loading...</span> : null}
-
-      {/* All user data (debug) */}
-      <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   );
 }
