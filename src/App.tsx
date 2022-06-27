@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import Login from "./Login";
-import Register from "./Register";
+import { Outlet } from "react-router-dom";
 import "./App.scss";
 
+// Main app page
 export default function App() {
+  // Fetch test message from server
   const [testMsg, setTestMsg] = useState<string | null>(null);
   useEffect(() => {
     fetch(process.env.REACT_APP_API_URL!)
@@ -21,18 +20,12 @@ export default function App() {
 
   return (
     <div className="App">
+      {/* Header */}
       <h1>VSV Chat</h1>
-      <p>Test: {testMsg || "..."}</p>
+      <p>Backend says: {testMsg || "..."}</p>
 
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/reset" element={<h1>Coming soon...</h1>} />
-          <Route path="*" element={<h1>404!!!</h1>} />
-        </Routes>
-      </BrowserRouter>
+      {/* Use routes from index.tsx */}
+      <Outlet />
     </div>
   );
 }
