@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, loginUser } from "./auth";
+import "./auth.scss";
 
 // Login user page
 export default function Login() {
@@ -12,19 +13,19 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [isLoadingLogin, setIsLoadingAuth] = useState(false); // Loading login check
+  const [isLoadingLogin, setIsLoadingLogin] = useState(false); // Loading login check
   const [authError, setAuthError] = useState<string | null>(null); // Login failed error
 
   // On click login button
   const login = useCallback(() => {
-    setIsLoadingAuth(true); // Start loading
+    setIsLoadingLogin(true); // Start loading
     // Attempt login
     loginUser(email, password).catch(err => {
       //TODO Proper error handling
       setAuthError(err); // Fallback handle: Generic error message
-      setIsLoadingAuth(false); // Stop loading
+      setIsLoadingLogin(false); // Stop loading
     });
-  }, [email, password, setIsLoadingAuth]);
+  }, [email, password, setIsLoadingLogin]);
 
   // Redirect on successful login
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function Login() {
   }, [user, isLoadingUser, navigate]);
 
   return (
-    <div className="Login">
+    <div className="Login authContainer">
       {/* Email */}
       <input
         type="text"
@@ -69,7 +70,7 @@ export default function Login() {
       </div>
 
       {/* Generic fallback error message */}
-      <pre style={{ color: "red" }}>{authError?.toString()}</pre>
+      <pre className="error">{authError?.toString()}</pre>
     </div>
   );
 }

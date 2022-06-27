@@ -30,7 +30,7 @@ export default function Register() {
   }, [user, loading, navigate]);
 
   return (
-    <div className="Register">
+    <div className="Register authContainer">
       {/* Display name */}
       <input
         type="text"
