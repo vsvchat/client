@@ -28,6 +28,12 @@
 
       a {
         color: black;
+
+        &:not(:first-of-type)::before {
+          content: "|";
+          margin: 0 0.5em;
+          opacity: 0.5;
+        }
       }
     }
   }

@@ -5,6 +5,7 @@ import { auth, registerUser } from "./auth";
 import UsernameInput from "./inputs/UsernameInput";
 import PasswordInput from "./inputs/PasswordInput";
 import SubmitButton from "./inputs/SubmitButton";
+import EmailInput from "./inputs/EmailInput";
 
 // Register user page
 export default function Register() {
@@ -48,16 +49,7 @@ export default function Register() {
           {...{ password, setPassword, showPassword, setShowPassword }}
         />
 
-        {/* Email */}
-        <section className="EmailInput">
-          <input
-            name="email"
-            type="text"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Email Address"
-          />
-        </section>
+        <EmailInput {...{ email, setEmail }} />
 
         {/* Display name */}
         <section>

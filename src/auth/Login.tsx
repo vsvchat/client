@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, loginUser } from "./auth";
-import LoadingSpinner from "../components/LoadingSpinner";
+import UsernameInput from "./inputs/UsernameInput";
+import PasswordInput from "./inputs/PasswordInput";
+import SubmitButton from "./inputs/SubmitButton";
 import "./auth.scss";
 
 // Login user page
@@ -36,49 +38,30 @@ export default function Login() {
   }, [user, isLoadingUser, navigate]);
 
   return (
-    <div className="Login authContainer">
-      {/* Username */}
-      <input
-        type="text"
-        value={username}
-        onChange={e => setUsername(e.target.value)}
-        placeholder="Username"
-      />
+    <div className="Login auth">
+      <div className="container">
+        <UsernameInput {...{ username, setUsername }} />
 
-      {/* Password */}
-      <input
-        type={showPassword ? "text" : "password"}
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        placeholder="Password"
-      />
+        <PasswordInput
+          {...{ password, setPassword, showPassword, setShowPassword }}
+        />
 
-      {/* Show password option */}
-      <input
-        type="checkbox"
-        onChange={e => setShowPassword(e.target.checked)}
-        id="showPasswordCheckbox"
-      />
-      <label htmlFor="showPasswordCheckbox">Show password</label>
+        <SubmitButton
+          text="Login"
+          submit={login}
+          loadingWhen={isLoadingUser || isLoadingLogin}
+        />
 
-      {/* Login button */}
-      <button onClick={login}>Login</button>
+        {/* Register, forgot password links */}
+        <section className="alternatives">
+          <Link to="/register">Register</Link>
 
-      {/* Loading indicator */}
-      <LoadingSpinner when={isLoadingUser || isLoadingLogin} />
+          <Link to="/reset">Forgot Password</Link>
+        </section>
 
-      {/* Register link */}
-      <div>
-        <Link to="/register">Register</Link>
+        {/* Generic fallback error message */}
+        <div className="error">{authError?.toString()}</div>
       </div>
-
-      {/* Forgot password link */}
-      <div>
-        <Link to="/reset">Forgot Password</Link>
-      </div>
-
-      {/* Generic fallback error message */}
-      <pre className="error">{authError?.toString()}</pre>
     </div>
   );
 }

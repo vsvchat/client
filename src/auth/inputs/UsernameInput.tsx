@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-// Email input field
+// Username input field
 export default function UsernameInput(props: {
   username: string;
   setUsername: Dispatch<SetStateAction<string>>;

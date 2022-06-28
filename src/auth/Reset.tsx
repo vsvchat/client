@@ -2,70 +2,62 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import LoadingSpinner from "../components/LoadingSpinner";
 import { auth, resetPassword } from "./auth";
 import "./auth.scss";
+import EmailInput from "./inputs/EmailInput";
+import SubmitButton from "./inputs/SubmitButton";
 
 // Reset password page
 export default function Reset() {
   const navigate = useNavigate();
-  const [user, loading] = useAuthState(auth); // User data (to check already logged in)
+  const [user, isLoadingUser] = useAuthState(auth); // User data (to check already logged in)
 
   const [email, setEmail] = useState(""); // User input email
 
-  const [isLoadingReset, setIsLoadingReset] = useState<boolean | 0>(false); // Loading send email (0 for success)
-  const [error, setError] = useState<string | null>(null); // Error
+  const [isLoadingSent, setIsLoadingSend] = useState<boolean | 0>(false); // Loading send email (0 for success)
+  const [authError, setAuthError] = useState<string | null>(null); // Error
 
   // On click reset button
-  const reset = useCallback(() => {
-    setIsLoadingReset(true);
-    setError(null);
+  const sendReset = useCallback(() => {
+    setIsLoadingSend(true);
+    setAuthError(null);
     resetPassword(email)
       .then(() => {
-        setIsLoadingReset(0);
+        setIsLoadingSend(0);
       })
       .catch(err => {
-        setIsLoadingReset(false);
-        setError(err?.toString());
+        setIsLoadingSend(false);
+        setAuthError(err?.toString());
       });
   }, [email]);
 
   // Navigate if already logged in
   useEffect(() => {
-    if (loading) return;
+    if (isLoadingUser) return;
     if (user) navigate("/");
-  }, [user, loading, navigate]);
+  }, [user, isLoadingUser, navigate]);
 
   return (
-    <div className="Reset authContainer">
-      {/* Email
-        //TODO Add validation before API
-       */}
-      <input
-        type="text"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="Email Address"
-      />
+    <div className="Reset auth">
+      <div className="container">
+        <EmailInput {...{ email, setEmail }} />
 
-      {/* Send reset email button */}
-      <button onClick={reset}>Send password reset email</button>
+        <SubmitButton
+          text={isLoadingSent === 0 ? "Sent!" : "Send reset email"}
+          submit={sendReset}
+          loadingWhen={isLoadingUser || !!isLoadingSent}
+        />
 
-      {/* Loading indicator */}
-      <LoadingSpinner when={!!isLoadingReset} />
-      {/* Message when sent */}
-      <span>{isLoadingReset === 0 ? "Sent!" : null}</span>
+        {/* Login, register links */}
+        <section className="alternatives">
+          <Link to="/login">Log in</Link>
 
-      {/* Error */}
-      <span className="error">{error}</span>
-
-      {/* Login or register link */}
-      <div>
-        <Link to="/">Login</Link>
+          <Link to="/register">Register</Link>
+        </section>
       </div>
-      <div>
-        <Link to="/register">Register</Link>
-      </div>
+
+      {/* Generic fallback error message */}
+      <div className="error">{authError?.toString()}</div>
     </div>
   );
 }
