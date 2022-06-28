@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { auth, registerUser } from "./auth";
 
 // Register user page
@@ -9,10 +10,11 @@ export default function Register() {
   const [user, isLoadingUser] = useAuthState(auth);
 
   // User input name, email and password
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
 
   const [isLoadingLogin, setIsLoadingLogin] = useState(false); // Loading login check
   const [authError, setAuthError] = useState<string | null>(null); // Login failed error
@@ -23,11 +25,11 @@ export default function Register() {
       setAuthError("Enter a name");
       return;
     }
-    registerUser(name, email, password).catch(err => {
+    registerUser(username, email, password, name).catch(err => {
       setAuthError(err); // Fallback handle: Generic error message
       setIsLoadingLogin(false); // Stop loading
     });
-  }, [name, email, password]);
+  }, [email, password, name, username]);
 
   // Redirect if logged in
   useEffect(() => {
@@ -36,53 +38,62 @@ export default function Register() {
   }, [user, isLoadingUser, navigate]);
 
   return (
-    <div className="Register authContainer">
-      {/* Display name */}
-      <input
-        type="text"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        placeholder="Full Name"
-      />
+    <div className="Register auth">
+      <div className="container">
+        {/* Username */}
+        <input
+          type="text"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+          placeholder="Username"
+        />
 
-      {/* Email */}
-      <input
-        type="text"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="E-mail Address"
-      />
+        {/* Email */}
+        <input
+          type="text"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Email Address"
+        />
 
-      {/* Password
-        //TODO Add 'show password option' 
-       */}
-      <input
-        type={showPassword ? "text" : "password"}
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        placeholder="Password"
-      />
+        {/* Password */}
+        <input
+          type={showPassword ? "text" : "password"}
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          placeholder="Password"
+        />
 
-      {/* Show password option */}
-      <input
-        type="checkbox"
-        onChange={e => setShowPassword(e.target.checked)}
-      />
-      <label>Show password</label>
+        {/* Display name */}
+        <input
+          type="text"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          placeholder="Display Name"
+        />
 
-      {/* Register button */}
-      <button onClick={register}>Register</button>
+        {/* Show password option */}
+        <input
+          type="checkbox"
+          onChange={e => setShowPassword(e.target.checked)}
+          id="showPasswordCheckbox"
+        />
+        <label htmlFor="showPasswordCheckbox">Show password</label>
 
-      {/* Loading indicator */}
-      {isLoadingUser || isLoadingLogin ? <span>Loading...</span> : null}
+        {/* Register button */}
+        <button onClick={register}>Register</button>
 
-      {/* Login option */}
-      <div>
-        <Link to="/">Login</Link>
+        {/* Loading indicator */}
+        <LoadingSpinner when={isLoadingUser || isLoadingLogin} />
+
+        {/* Login link */}
+        <div>
+          <Link to="/login">Login</Link>
+        </div>
       </div>
 
       {/* Generic fallback error message */}
-      <pre className="error">{authError?.toString()}</pre>
+      <div className="error">{authError?.toString()}</div>
     </div>
   );
 }

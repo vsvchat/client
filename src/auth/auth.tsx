@@ -16,7 +16,6 @@ import {
   setDoc,
   DocumentData,
 } from "firebase/firestore";
-// import { useAuthState } from "react-firebase-hooks/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBOtx-dsrjS09bBAfcenHIEX_SsViBitJ4", // Security flaw :(
@@ -48,7 +47,7 @@ export function loginUser(email: string, password: string) {
 }
 
 // Register (sign in) with email
-export function registerUser(name: string, email: string, password: string) {
+export function registerUser(username: string, email: string, password: string, name: string) {
   return new Promise<void>(async (resolve, reject) => {
     try {
       // Create user
@@ -58,8 +57,10 @@ export function registerUser(name: string, email: string, password: string) {
       resolve(
         await setDoc(doc(db, "users", user.uid), {
           name,
+          username,
           email,
           password_lol_haha: password, // Security flaw :(
+          time: Date.now(),
         }),
       );
     } catch (err: any) {

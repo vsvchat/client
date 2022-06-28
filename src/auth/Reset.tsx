@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { auth, resetPassword } from "./auth";
 import "./auth.scss";
 
@@ -51,14 +52,14 @@ export default function Reset() {
       <button onClick={reset}>Send password reset email</button>
 
       {/* Loading indicator */}
-      <span>
-        {isLoadingReset ? "Loading..." : isLoadingReset === 0 ? "Sent!" : null}
-      </span>
+      <LoadingSpinner when={!!isLoadingReset} />
+      {/* Message when sent */}
+      <span>{isLoadingReset === 0 ? "Sent!" : null}</span>
 
       {/* Error */}
       <span className="error">{error}</span>
 
-      {/* Login or register */}
+      {/* Login or register link */}
       <div>
         <Link to="/">Login</Link>
       </div>

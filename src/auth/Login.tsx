@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, loginUser } from "./auth";
+import LoadingSpinner from "../components/LoadingSpinner";
 import "./auth.scss";
 
 // Login user page
@@ -10,7 +11,7 @@ export default function Login() {
   const [user, isLoadingUser] = useAuthState(auth); // User data (to validate login)
 
   // User input email and password
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,12 +22,12 @@ export default function Login() {
   const login = useCallback(() => {
     setIsLoadingLogin(true); // Start loading
     // Attempt login
-    loginUser(email, password).catch(err => {
+    loginUser(username, password).catch(err => {
       //TODO Proper error handling
       setAuthError(err); // Fallback handle: Generic error message
       setIsLoadingLogin(false); // Stop loading
     });
-  }, [email, password, setIsLoadingLogin]);
+  }, [username, password, setIsLoadingLogin]);
 
   // Redirect on successful login
   useEffect(() => {
@@ -36,17 +37,15 @@ export default function Login() {
 
   return (
     <div className="Login authContainer">
-      {/* Email */}
+      {/* Username */}
       <input
         type="text"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        placeholder="Email Address"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+        placeholder="Username"
       />
 
-      {/* Password
-        //TODO Add 'show password option' 
-      */}
+      {/* Password */}
       <input
         type={showPassword ? "text" : "password"}
         value={password}
@@ -58,23 +57,24 @@ export default function Login() {
       <input
         type="checkbox"
         onChange={e => setShowPassword(e.target.checked)}
+        id="showPasswordCheckbox"
       />
-      <label>Show password</label>
+      <label htmlFor="showPasswordCheckbox">Show password</label>
 
       {/* Login button */}
       <button onClick={login}>Login</button>
 
       {/* Loading indicator */}
-      {isLoadingUser || isLoadingLogin ? <span>Loading...</span> : null}
+      <LoadingSpinner when={isLoadingUser || isLoadingLogin} />
 
-      {/* Forgot password option */}
-      <div>
-        <Link to="/reset">Forgot Password</Link>
-      </div>
-
-      {/* Register option */}
+      {/* Register link */}
       <div>
         <Link to="/register">Register</Link>
+      </div>
+
+      {/* Forgot password link */}
+      <div>
+        <Link to="/reset">Forgot Password</Link>
       </div>
 
       {/* Generic fallback error message */}
