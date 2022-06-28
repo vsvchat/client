@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
-import LoadingSpinner from "../components/LoadingSpinner";
 import { auth, registerUser } from "./auth";
+import PasswordInput from "./inputs/PasswordInput";
+import SubmitButton from "./inputs/SubmitButton";
 
 // Register user page
 export default function Register() {
@@ -41,53 +42,52 @@ export default function Register() {
     <div className="Register auth">
       <div className="container">
         {/* Username */}
-        <input
-          type="text"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-          placeholder="Username"
-        />
+        <div className="line">
+          <input
+            name="username"
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            placeholder="Username"
+          />
+        </div>
 
         {/* Email */}
-        <input
-          type="text"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="Email Address"
-        />
+        <div className="line">
+          <input
+            name="email"
+            type="text"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Email Address"
+          />
+        </div>
 
         {/* Password */}
-        <input
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="Password"
+        <PasswordInput
+          {...{ password, setPassword, showPassword, setShowPassword }}
         />
 
         {/* Display name */}
-        <input
-          type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          placeholder="Display Name"
-        />
-
-        {/* Show password option */}
-        <input
-          type="checkbox"
-          onChange={e => setShowPassword(e.target.checked)}
-          id="showPasswordCheckbox"
-        />
-        <label htmlFor="showPasswordCheckbox">Show password</label>
+        <div className="line">
+          <input
+            name="name"
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Display Name"
+          />
+        </div>
 
         {/* Register button */}
-        <button onClick={register}>Register</button>
-
-        {/* Loading indicator */}
-        <LoadingSpinner when={isLoadingUser || isLoadingLogin} />
+        <SubmitButton
+          text="Register"
+          submit={register}
+          loadingWhen={isLoadingUser || isLoadingLogin}
+        />
 
         {/* Login link */}
-        <div>
+        <div className="alternatives">
           <Link to="/login">Login</Link>
         </div>
       </div>

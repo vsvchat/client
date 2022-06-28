@@ -1,15 +1,29 @@
 .auth {
-  // background-color: black;
-  // .container {
-  //   max-width: 20em;
-  //   padding: 20px;
-  //   background-color: white;
+  background-color: black;
+  .container {
+    max-width: 20em;
+    padding: 20px;
+    background-color: white;
 
-  //   input {
-  //     width: calc(100% - 10px);
+    .line {
+      display: flex;
+      width: 100%;
+      height: 2em;
 
-  //   }
-  // }
+      input {
+        width: 100%;
+      }
+    }
+
+    .alternatives {
+      font-size: 80%;
+      text-align: center;
+
+      a {
+        color: black;
+      }
+    }
+  }
 
   .error {
     color: red;
