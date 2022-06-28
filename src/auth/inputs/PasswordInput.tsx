@@ -11,7 +11,7 @@ export default function PasswordInput(props: {
   setShowPassword: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <div className="PasswordInput line">
+    <section className="PasswordInput">
       {/* Password input */}
       <input
         name="password"
@@ -35,6 +35,6 @@ export default function PasswordInput(props: {
           </div>
         </label>
       </div>
-    </div>
+    </section>
   );
 }

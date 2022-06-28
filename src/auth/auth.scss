@@ -1,14 +1,20 @@
 .auth {
-  background-color: black;
   .container {
     max-width: 20em;
     padding: 20px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    border: 2px solid grey;
     background-color: white;
 
-    .line {
+    section:not(.alternatives) {
       display: flex;
       width: 100%;
       height: 2em;
+
+      &:not(:first-of-type) {
+        margin-top: 5px;
+      }
 
       input {
         width: 100%;
@@ -16,6 +22,7 @@
     }
 
     .alternatives {
+      margin-top: 10px;
       font-size: 80%;
       text-align: center;
 

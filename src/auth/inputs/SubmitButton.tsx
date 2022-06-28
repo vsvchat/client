@@ -9,16 +9,18 @@ export default function SubmitButton(props: {
   loadingWhen: boolean;
 }) {
   return (
-    <button className="SubmitButton line" onClick={props.submit}>
-      {/* Display text for button */}
-      <span className="text">{props.text}</span>
+    <section className="SubmitButton">
+      <button onClick={props.submit}>
+        {/* Display text for button */}
+        <span className="text">{props.text}</span>
 
-      {/* Loading indicator */}
-      <div className="loading">
-        <span>
-          <LoadingSpinner when={props.loadingWhen} />
-        </span>
-      </div>
-    </button>
+        {/* Loading indicator */}
+        <div className="loading">
+          <span>
+            <LoadingSpinner when={props.loadingWhen} />
+          </span>
+        </div>
+      </button>
+    </section>
   );
 }

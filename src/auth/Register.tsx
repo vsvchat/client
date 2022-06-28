@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, registerUser } from "./auth";
+import EmailInput from "./inputs/EmailInput";
 import PasswordInput from "./inputs/PasswordInput";
 import SubmitButton from "./inputs/SubmitButton";
 
@@ -21,11 +22,11 @@ export default function Register() {
   const [authError, setAuthError] = useState<string | null>(null); // Login failed error
 
   const register = useCallback(() => {
-    setIsLoadingLogin(true); // Start loading
     if (!name) {
       setAuthError("Enter a name");
       return;
     }
+    setIsLoadingLogin(true); // Start loading
     registerUser(username, email, password, name).catch(err => {
       setAuthError(err); // Fallback handle: Generic error message
       setIsLoadingLogin(false); // Stop loading
@@ -42,7 +43,7 @@ export default function Register() {
     <div className="Register auth">
       <div className="container">
         {/* Username */}
-        <div className="line">
+        <section>
           <input
             name="username"
             type="text"
@@ -50,26 +51,16 @@ export default function Register() {
             onChange={e => setUsername(e.target.value)}
             placeholder="Username"
           />
-        </div>
+        </section>
 
-        {/* Email */}
-        <div className="line">
-          <input
-            name="email"
-            type="text"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Email Address"
-          />
-        </div>
+        <EmailInput {...{ email, setEmail }} />
 
-        {/* Password */}
         <PasswordInput
           {...{ password, setPassword, showPassword, setShowPassword }}
         />
 
         {/* Display name */}
-        <div className="line">
+        <section>
           <input
             name="name"
             type="text"
@@ -77,9 +68,8 @@ export default function Register() {
             onChange={e => setName(e.target.value)}
             placeholder="Display Name"
           />
-        </div>
+        </section>
 
-        {/* Register button */}
         <SubmitButton
           text="Register"
           submit={register}
@@ -87,9 +77,9 @@ export default function Register() {
         />
 
         {/* Login link */}
-        <div className="alternatives">
+        <section className="alternatives">
           <Link to="/login">Login</Link>
-        </div>
+        </section>
       </div>
 
       {/* Generic fallback error message */}
