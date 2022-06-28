@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, registerUser } from "./auth";
-import EmailInput from "./inputs/EmailInput";
+import UsernameInput from "./inputs/UsernameInput";
 import PasswordInput from "./inputs/PasswordInput";
 import SubmitButton from "./inputs/SubmitButton";
 
@@ -42,22 +42,22 @@ export default function Register() {
   return (
     <div className="Register auth">
       <div className="container">
-        {/* Username */}
-        <section>
-          <input
-            name="username"
-            type="text"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            placeholder="Username"
-          />
-        </section>
-
-        <EmailInput {...{ email, setEmail }} />
+        <UsernameInput {...{ username, setUsername }} />
 
         <PasswordInput
           {...{ password, setPassword, showPassword, setShowPassword }}
         />
+
+        {/* Email */}
+        <section className="EmailInput">
+          <input
+            name="email"
+            type="text"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Email Address"
+          />
+        </section>
 
         {/* Display name */}
         <section>
