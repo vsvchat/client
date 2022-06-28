@@ -56,7 +56,7 @@ export default function Login() {
         <section className="alternatives">
           <Link to="/register">Register</Link>
 
-          <Link to="/reset">Forgot Password</Link>
+          <Link to="/forgot">Forgot Password</Link>
         </section>
 
         {/* Generic fallback error message */}

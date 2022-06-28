@@ -38,7 +38,7 @@ export default function Reset() {
   }, [user, isLoadingUser, navigate]);
 
   return (
-    <div className="Reset auth">
+    <div className="Forgot auth">
       <div className="container">
         <EmailInput {...{ email, setEmail }} />
 

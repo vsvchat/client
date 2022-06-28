@@ -5,7 +5,7 @@ import App from "./App";
 import Dashboard from "./Dashboard";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
-import Reset from "./auth/Reset";
+import Forgot from "./auth/Forgot";
 import NotFound from "./NotFound";
 import "./index.scss";
 
@@ -18,7 +18,7 @@ root.render(
           <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/reset" element={<Reset />} />
+          <Route path="/forgot" element={<Forgot />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
