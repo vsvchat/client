@@ -22,19 +22,19 @@ export default function PasswordInput(props: {
       />
 
       {/* Show password option */}
-      <label className="showPassword" title="Show password">
-        <input
-          name="showPassword"
-          type="checkbox"
-          checked={props.showPassword}
-          onChange={e => props.setShowPassword(e.target.checked)}
-        />
-        <div className="icon">
-          <span className={props.showPassword ? "show" : undefined}>
+      <div className="showPasswordContainer">
+        <label className="showPassword" title="Show password">
+          <input
+            name="showPassword"
+            type="checkbox"
+            checked={props.showPassword}
+            onChange={e => props.setShowPassword(e.target.checked)}
+          />
+          <div className={(props.showPassword ? "show " : "") + "icon"}>
             <FontAwesomeIcon icon={props.showPassword ? faEye : faEyeSlash} />
-          </span>
-        </div>
-      </label>
+          </div>
+        </label>
+      </div>
     </div>
   );
 }
