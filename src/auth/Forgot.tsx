@@ -3,9 +3,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { auth, resetPassword } from "./firebase";
-import "./auth.scss";
 import EmailInput from "./inputs/EmailInput";
 import SubmitButton from "./inputs/SubmitButton";
+import "./auth.scss";
 
 // Reset password page
 export default function Reset() {
@@ -19,7 +19,7 @@ export default function Reset() {
 
   // On click reset button
   const sendReset = useCallback(() => {
-    setIsLoadingSend(true);
+    setIsLoadingSend(true); // Start loading
     setAuthError(null);
     resetPassword(email)
       .then(() => {

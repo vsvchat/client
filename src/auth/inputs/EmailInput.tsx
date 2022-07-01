@@ -9,6 +9,7 @@ export default function Emailinput(props: {
     <section className="EmailInput">
       <input
         type="email"
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}"
         value={props.email}
         onChange={e => props.setEmail(e.target.value)}
         placeholder="Email Address"

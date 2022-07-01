@@ -32,22 +32,24 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-//TODO Remove console.error
-
 // Login with email
 export function loginUser(email: string, password: string) {
   return new Promise<UserCredential>(async (resolve, reject) => {
     try {
       resolve(await signInWithEmailAndPassword(auth, email, password));
     } catch (err: any) {
-      console.error(err);
       reject(err);
     }
   });
 }
 
 // Register (sign in) with email
-export function registerUser(username: string, email: string, password: string, name: string) {
+export function registerUser(
+  username: string,
+  email: string,
+  password: string,
+  name: string,
+) {
   return new Promise<void>(async (resolve, reject) => {
     try {
       // Create user
@@ -64,7 +66,6 @@ export function registerUser(username: string, email: string, password: string, 
         }),
       );
     } catch (err: any) {
-      console.error(err);
       reject(err);
     }
   });
@@ -82,7 +83,6 @@ export function resetPassword(email: string) {
       await sendPasswordResetEmail(auth, email);
       resolve();
     } catch (err: any) {
-      console.error(err);
       reject(err);
     }
   });
@@ -101,7 +101,6 @@ export function getUserData(user: User | null | undefined) {
       }
       resolve(userDoc.data());
     } catch (err: any) {
-      console.error(err);
       reject(err);
     }
   });

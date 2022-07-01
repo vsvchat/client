@@ -6,6 +6,7 @@ import UsernameInput from "./inputs/UsernameInput";
 import PasswordInput from "./inputs/PasswordInput";
 import SubmitButton from "./inputs/SubmitButton";
 import EmailInput from "./inputs/EmailInput";
+import "./auth.scss";
 
 // Register user page
 export default function Register() {
@@ -23,10 +24,6 @@ export default function Register() {
   const [authError, setAuthError] = useState<string | null>(null); // Login failed error
 
   const register = useCallback(() => {
-    if (!name) {
-      setAuthError("Enter a name");
-      return;
-    }
     setIsLoadingLogin(true); // Start loading
     registerUser(username, email, password, name).catch(err => {
       setAuthError(err); // Fallback handle: Generic error message

@@ -23,7 +23,6 @@ export default function Login() {
   // On click login button
   const login = useCallback(() => {
     setIsLoadingLogin(true); // Start loading
-    // Attempt login
     loginUser(username, password).catch(err => {
       //TODO Proper error handling
       setAuthError(err); // Fallback handle: Generic error message
