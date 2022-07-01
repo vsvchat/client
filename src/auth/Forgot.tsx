@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { auth, resetPassword } from "./auth";
+import { auth, resetPassword } from "./firebase";
 import "./auth.scss";
 import EmailInput from "./inputs/EmailInput";
 import SubmitButton from "./inputs/SubmitButton";

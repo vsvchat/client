@@ -106,15 +106,3 @@ export function getUserData(user: User | null | undefined) {
     }
   });
 }
-
-// Get current user display name
-export function getName(user: User | null | undefined) {
-  return new Promise<string>(async (resolve, reject) => {
-    try {
-      resolve((await getUserData(user)).name);
-    } catch (err: any) {
-      console.error(err);
-      reject(err);
-    }
-  });
-}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, loginUser } from "./auth";
+import { auth, loginUser } from "./firebase";
 import UsernameInput from "./inputs/UsernameInput";
 import PasswordInput from "./inputs/PasswordInput";
 import SubmitButton from "./inputs/SubmitButton";
