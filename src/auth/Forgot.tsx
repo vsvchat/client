@@ -39,12 +39,16 @@ export default function Reset() {
 
   return (
     <div className="Forgot auth">
-      <div className="container">
+      <form
+        onSubmit={event => {
+          event.preventDefault();
+          sendReset();
+        }}
+      >
         <EmailInput {...{ email, setEmail }} />
 
         <SubmitButton
           text={isLoadingSent === 0 ? "Sent!" : "Send reset email"}
-          submit={sendReset}
           loadingWhen={isLoadingUser || !!isLoadingSent}
         />
 
@@ -54,7 +58,7 @@ export default function Reset() {
 
           <Link to="/register">Register</Link>
         </section>
-      </div>
+      </form>
 
       {/* Generic fallback error message */}
       <div className="error">{authError?.toString()}</div>

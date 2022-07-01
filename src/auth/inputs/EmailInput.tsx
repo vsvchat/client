@@ -8,11 +8,11 @@ export default function Emailinput(props: {
   return (
     <section className="EmailInput">
       <input
-        name="email"
-        type="text"
+        type="email"
         value={props.email}
         onChange={e => props.setEmail(e.target.value)}
         placeholder="Email Address"
+        required
       />
     </section>
   );

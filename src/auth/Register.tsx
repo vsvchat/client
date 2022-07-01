@@ -42,7 +42,12 @@ export default function Register() {
 
   return (
     <div className="Register auth">
-      <div className="container">
+      <form
+        onSubmit={event => {
+          event.preventDefault();
+          register();
+        }}
+      >
         <UsernameInput {...{ username, setUsername }} />
 
         <PasswordInput
@@ -59,12 +64,12 @@ export default function Register() {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Display Name"
+            required
           />
         </section>
 
         <SubmitButton
           text="Register"
-          submit={register}
           loadingWhen={isLoadingUser || isLoadingLogin}
         />
 
@@ -72,7 +77,7 @@ export default function Register() {
         <section className="alternatives">
           <Link to="/login">Login</Link>
         </section>
-      </div>
+      </form>
 
       {/* Generic fallback error message */}
       <div className="error">{authError?.toString()}</div>

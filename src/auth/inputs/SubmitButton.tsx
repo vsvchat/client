@@ -1,18 +1,16 @@
-import { MouseEventHandler } from "react";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import "./SubmitButton.scss";
 
 // Submit button for login / register
 export default function SubmitButton(props: {
   text: string;
-  submit: MouseEventHandler<HTMLButtonElement>;
   loadingWhen: boolean;
 }) {
   return (
     <section className="SubmitButton">
-      <button onClick={props.submit}>
+      <label>
         {/* Display text for button */}
-        <span className="text">{props.text}</span>
+        <input type="submit" value={props.text} />
 
         {/* Loading indicator */}
         <div className="loading">
@@ -20,7 +18,7 @@ export default function SubmitButton(props: {
             <LoadingSpinner when={props.loadingWhen} />
           </span>
         </div>
-      </button>
+      </label>
     </section>
   );
 }

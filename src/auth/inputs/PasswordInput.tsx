@@ -19,6 +19,7 @@ export default function PasswordInput(props: {
         value={props.password}
         onChange={e => props.setPassword(e.target.value)}
         placeholder="Password"
+        required
       />
 
       {/* Show password option */}

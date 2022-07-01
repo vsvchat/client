@@ -1,5 +1,5 @@
 .SubmitButton {
-  button {
+  label {
     position: relative;
     display: flex;
     width: 100%;
@@ -8,8 +8,9 @@
     justify-content: center;
     cursor: pointer;
 
-    .text {
-      font-size: 120%;
+    input[type="submit"] {
+      font-size: 100%;
+      padding: 4px 0 5px 0;
     }
 
     .loading {

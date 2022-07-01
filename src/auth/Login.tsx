@@ -39,7 +39,12 @@ export default function Login() {
 
   return (
     <div className="Login auth">
-      <div className="container">
+      <form
+        onSubmit={event => {
+          event.preventDefault();
+          login();
+        }}
+      >
         <UsernameInput {...{ username, setUsername }} />
 
         <PasswordInput
@@ -48,7 +53,6 @@ export default function Login() {
 
         <SubmitButton
           text="Login"
-          submit={login}
           loadingWhen={isLoadingUser || isLoadingLogin}
         />
 
@@ -58,10 +62,10 @@ export default function Login() {
 
           <Link to="/forgot">Forgot Password</Link>
         </section>
+      </form>
 
-        {/* Generic fallback error message */}
-        <div className="error">{authError?.toString()}</div>
-      </div>
+      {/* Generic fallback error message */}
+      <div className="error">{authError?.toString()}</div>
     </div>
   );
 }
