@@ -88,7 +88,7 @@ function snapshotToArray(snapshot: QuerySnapshot<DocumentData>): any[] {
 
 // Check if string is valid email
 function isEmail(value: string) {
-  return /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/g.test(value);
+  return /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/.test(value);
 }
 
 // Register (sign in) with email
