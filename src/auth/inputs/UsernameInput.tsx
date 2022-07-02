@@ -13,7 +13,7 @@ export default function UsernameInput(props: {
         value={props.username}
         onChange={e => props.setUsername(e.target.value)}
         placeholder="Username"
-        // required
+        required
       />
     </section>
   );
