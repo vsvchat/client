@@ -13,6 +13,7 @@ export default function UsernameInput(props: {
         value={props.username}
         onChange={e => props.setUsername(e.target.value)}
         placeholder="Username"
+        pattern="^(?!\.)[a-z._0-9]{1,16}$"
         required
       />
     </section>
