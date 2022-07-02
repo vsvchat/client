@@ -11,10 +11,15 @@ import {
 } from "firebase/auth";
 import {
   getFirestore,
+  collection,
   doc,
   getDoc,
   setDoc,
   DocumentData,
+  query,
+  where,
+  getDocs,
+  QuerySnapshot,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -32,15 +37,58 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Login with email
-export function loginUser(email: string, password: string) {
-  return new Promise<UserCredential>(async (resolve, reject) => {
+// Login with username or email
+export function loginUser(usernameOrEmail: string, password: string) {
+  return new Promise<UserCredential | null>(async (resolve, reject) => {
     try {
+      // Get email if is username
+      var email = isEmail(usernameOrEmail)
+        ? usernameOrEmail
+        : await getEmailFromUsername(usernameOrEmail);
+      // Login
       resolve(await signInWithEmailAndPassword(auth, email, password));
     } catch (err: any) {
       reject(err);
     }
   });
+}
+
+// Get email address from username in database
+function getEmailFromUsername(username: string) {
+  return new Promise<string>(async (resolve, reject) => {
+    try {
+      // Query docs
+      const querySnapshot = await getDocs(
+        await query(collection(db, "users"), where("username", "==", username)),
+      );
+      if (querySnapshot.size < 1) {
+        // No doc with that username
+        throw new Error("auth/user-not-exist");
+      }
+      if (querySnapshot.size > 1) {
+        // Multiple users with same username
+        throw new Error("auth/username-conflict");
+      }
+      // Convert to array and get first item email
+      resolve(snapshotToArray(querySnapshot)[0].email);
+    } catch (err: any) {
+      reject(err);
+    }
+  });
+}
+
+// Convert snapshot of documents to array
+function snapshotToArray(snapshot: QuerySnapshot<DocumentData>): any[] {
+  const array: any[] = [];
+  snapshot.forEach(function (childSnapshot) {
+    array.push({ ...childSnapshot.data(), id: childSnapshot.id });
+  });
+  return array;
+}
+
+// Check if string is valid email
+function isEmail(value: string) {
+  return /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/g.test(value);
 }
 
 // Register (sign in) with email
