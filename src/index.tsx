@@ -9,6 +9,7 @@ import Forgot from "./auth/Forgot";
 import NotFound from "./NotFound";
 import "./index.scss";
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(
   <StrictMode>

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 
 // Email input field
 export default function EmailInput(props: {
-  email: string;
+    email: string;
   setEmail: Dispatch<SetStateAction<string>>;
 }) {
   return (

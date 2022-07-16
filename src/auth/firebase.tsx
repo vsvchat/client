@@ -21,6 +21,7 @@ import {
   getDocs,
   QuerySnapshot,
 } from "firebase/firestore";
+import { userData } from "./dbTypes";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBOtx-dsrjS09bBAfcenHIEX_SsViBitJ4", // Security flaw :(
@@ -37,20 +38,18 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Login with username or email
-export function loginUser(usernameOrEmail: string, password: string) {
-  return new Promise<UserCredential | null>(async (resolve, reject) => {
-    try {
-      // Get email if is username
-      var email = isEmail(usernameOrEmail)
-        ? usernameOrEmail
-        : await getEmailFromUsername(usernameOrEmail);
-      // Login
-      resolve(await signInWithEmailAndPassword(auth, email, password));
-    } catch (err: any) {
-      reject(err);
-    }
+// Check if string is valid email
+function isEmail(value: string) {
+  return /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/.test(value);
+}
+
+// Convert snapshot of documents to array
+function snapshotToArray(snapshot: QuerySnapshot<DocumentData>): DocumentData[] {
+  const array: DocumentData[] = [];
+  snapshot.forEach(function (childSnapshot) {
+    array.push({ ...childSnapshot.data(), id: childSnapshot.id });
   });
+  return array;
 }
 
 // Get email address from username in database
@@ -71,24 +70,26 @@ function getEmailFromUsername(username: string) {
       }
       // Convert to array and get first item email
       resolve(snapshotToArray(querySnapshot)[0].email);
-    } catch (err: any) {
+    } catch (err: unknown) {
       reject(err);
     }
   });
 }
 
-// Convert snapshot of documents to array
-function snapshotToArray(snapshot: QuerySnapshot<DocumentData>): any[] {
-  const array: any[] = [];
-  snapshot.forEach(function (childSnapshot) {
-    array.push({ ...childSnapshot.data(), id: childSnapshot.id });
+// Login with username or email
+export function loginUser(usernameOrEmail: string, password: string) {
+  return new Promise<UserCredential | null>(async (resolve, reject) => {
+    try {
+      // Get email if is username
+      const email = isEmail(usernameOrEmail)
+        ? usernameOrEmail
+        : await getEmailFromUsername(usernameOrEmail);
+      // Login
+      resolve(await signInWithEmailAndPassword(auth, email, password));
+    } catch (err: unknown) {
+      reject(err);
+    }
   });
-  return array;
-}
-
-// Check if string is valid email
-function isEmail(value: string) {
-  return /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}/.test(value);
 }
 
 // Register (sign in) with email
@@ -101,19 +102,18 @@ export function registerUser(
   return new Promise<void>(async (resolve, reject) => {
     try {
       // Create user
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-      const user = res.user;
+      const user = (await createUserWithEmailAndPassword(auth, email, password)).user;
       // Add user to database
-      resolve(
-        await setDoc(doc(db, "users", user.uid), {
-          name,
-          username,
-          email,
-          password_lol_haha: password, // Security flaw :(
-          time: Date.now(),
-        }),
-      );
-    } catch (err: any) {
+      const data: userData = {
+        time: Date.now(),
+        username,
+        email,
+        name,
+        avatar: null, // Avatar
+        channels: [],
+      };
+      resolve(await setDoc(doc(db, "users", user.uid), data));
+    } catch (err: unknown) {
       reject(err);
     }
   });
@@ -130,7 +130,7 @@ export function resetPassword(email: string) {
     try {
       await sendPasswordResetEmail(auth, email);
       resolve();
-    } catch (err: any) {
+    } catch (err: unknown) {
       reject(err);
     }
   });
@@ -147,8 +147,9 @@ export function getUserData(user: User | null | undefined) {
       if (!userDoc.exists()) {
         throw new Error("auth/user-not-exist");
       }
-      resolve(userDoc.data());
-    } catch (err: any) {
+      const data = userDoc.data();
+      resolve(data);
+    } catch (err: unknown) {
       reject(err);
     }
   });
