@@ -11,5 +11,6 @@
     "fortawesome",
     "HIEX",
     "vsvchat"
-  ]
+  ],
+  "git.ignoreLimitWarning": true
 }
